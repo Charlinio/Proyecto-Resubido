@@ -1,0 +1,514 @@
+body{
+  font-family: 'Merriweather Sans', sans-serif;
+}
+
+/*::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #818181;
+  outline: 1px solid slategrey;
+}*/
+
+.navbar{
+  border-radius: 0;
+  background-color: #3A5787;
+  color: #FFF;
+  border: 0;
+  padding: 5px 35px 0px 50px;
+
+}
+
+.titula{
+  margin-left: 50px;
+}
+
+.navbar-inverse p.navbar-text{
+  color: #FFF;
+}
+
+ul.navbar-nav > li{
+  margin-left: 20px;
+}
+
+.navbar-brand{
+  float: left;
+  max-height: 40px;
+  padding-top: 0px;
+}
+
+.navbar-brand > img{
+  width: 120px;
+}
+
+.navbar-toggle, .navbar-toggle:hover{
+  background-color: transparent;
+}
+
+.navbar-inverse .navbar-nav .active a, .navbar-inverse .navbar-nav .active a:focus, .navbar-inverse .navbar-nav .active a:hover{
+  color: #0064AF;
+  background-color: #FFF;
+}
+
+.navbar-inverse .navbar-nav li a{
+  color: #D5D5D5;
+}
+
+.navbar-inverse .navbar-nav li a:hover{
+  color: #D96161;
+}
+.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover {
+    color: #fff;
+    background-color: #D96161;
+}
+
+.buscar{
+  color: #FFF;
+  background-color: transparent;
+  border-bottom: 1px solid #FFF;
+  border-radius: 0px;
+}
+
+.busca{
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #FFF;
+  border-radius: 0px;
+  color: #D96161;
+}
+
+.busca:focus{
+  border-color: #FFF;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  outline: 0 none;
+}
+
+.busca::placeholder{
+  color: #FFF;
+}
+
+
+.navbar-inverse .navbar-nav li a {
+    color: #FFF;
+}
+
+.navbar-inverse .navbar-nav li ul li a {
+    color: #000;
+}
+
+.navbar-inverse ul li a .notificaiones {
+    color: #FFF;
+    top: 5px;
+    left: 25px;
+    text-align: center;
+    position: absolute;
+    border-radius: 50%;
+    font-size: .9rem;
+    width: 15px;
+    height: 15px;
+    background-color: #D96161;
+    line-height: 1.6;
+}
+
+div.vertical{
+  background-color: #434242;
+  height: 100vh;
+  padding-top: 75px;
+  color: #FFF;
+  position: fixed;
+}
+
+div.vertical div.cabeza{
+  margin: 20px 0px;
+}
+
+div.contenido{
+  padding-top: 55px;
+}
+
+div.vertical div.contenedorimagen{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin:0px auto;
+  overflow: hidden;
+}
+
+div.vertical div.contenedorimagen img{
+  width: 100%;
+  cursor: pointer;
+}
+
+div.vertical a{
+  text-decoration: none;
+  display: block;
+  font-size: 1.5rem;
+  text-align: center;
+  background-color: transparent;
+  padding: 15px 20px;
+  /*text-transform: uppercase;*/
+  color: #FFF;
+  -webkit-transition: font-size 0.1s, color 0.3s, background-color 0.3s linear; /* Safari */
+   transition: font-size 0.1s, color 0.3s, background-color 0.3s linear;
+}
+
+div.vertical a:hover{
+  color: #a6a6a6;
+  background-color: #313131;
+}
+
+div.vertical a.activo{
+  color: #a6a6a6;
+  background-color: #313131;
+}
+
+div.vertical div.row h5:last-child{
+  margin-bottom: 20px;
+}
+
+.contenido{
+  /*background-color: #F2F2F2;*/
+}
+
+.estadofin, .cuotas{
+  background-color: white;
+}
+
+.carpetas{
+  color: #C0AC62;
+  font-size: 3rem;
+  background-color: transparent;
+  border: none;
+  -webkit-transition: font-size 0.5s; /* Safari */
+   transition: font-size 0.5s;
+}
+
+.carpetas:hover{
+  font-size: 3.5rem
+}
+
+.cajacarpeta{
+  height: 200px;
+}
+
+.eventos{
+  background-color: transparent;
+  border: none;
+  width: 180px;
+  height: 145px;
+  margin-bottom: 20px;
+  -webkit-transition: width 0.5s, height 0.5s; /* Safari */
+  transition: width 0.5s, height 0.5s;
+}
+
+.verevento{
+  color: rgba(255,255,255,0);
+  border-radius: 10px;
+  font-size: 3rem;
+  padding-top: 60px;
+  background-color: rgba(0,0,0,0);
+  width: 199px;
+  height: 174px;
+  position: absolute;
+  top:1px;
+}
+
+.verevento:hover{
+  color: rgba(255,255,255,0.5);
+  background-color: rgba(0,0,0,0.3);
+  -webkit-transition: color 0.5s, background-color 0.5s; /* Safari */
+  transition: color 0.5s, background-color 0.5s;
+  -webkit-transition-delay: 0.3s; /* Safari */
+  transition-delay: 0.3s;
+}
+
+.eventos img{
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.eventos:hover{
+  width: 210px;
+  height: 175px;
+}
+
+.cajaeventos{
+  height: 280px;
+}
+
+.cajausuarios{
+  height: 250px;
+}
+
+
+.controlacta{
+  border-right: 1px solid #000;
+}
+
+.nuevaacta{
+  padding: 15px;
+  color: #3A5787;
+  background-color: transparent;
+  border: none;
+  -webkit-transition: font-size 0.5s; /* Safari */
+   transition: font-size 0.5s;
+}
+
+.nuevaacta:hover{
+  font-size: 1.8rem;
+}
+
+.eliminarconvocatoria{
+  border: none;
+  -webkit-transition: font-size 0.5s; /* Safari */
+   transition: font-size 0.5s;
+   color:#FFF;
+   background-color: #B75C5C;
+   width:26px;
+   position: absolute;
+   right: 20px;
+   border-radius: 5px;
+
+}
+
+div.contenido div, div.contenido div div{
+  text-align: center;
+}
+
+.botones{
+  background-color: #3A5787;
+  color: #FFF;
+  border: none;
+  width: 150px;
+  height: 30px;
+  border-radius: 5px;
+}
+
+.botoneliminar{
+  background-color: #B24F4F;
+  color: #FFF;
+  border: none;
+  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+}
+
+.pt{
+  margin-top: 20px;
+}
+
+.listaconvocatoria{
+  list-style: none;
+  float: right;
+  margin-bottom: 20px;
+}
+
+.convocatoriona{
+  text-decoration: none;
+  background-color: #3A5787;
+  color: white;
+  padding: 10px;
+  width: 200px;
+  margin-right: 15px;
+}
+
+.convocatoriona:hover{
+  text-decoration: none;
+  color: #FFF;
+}
+
+.convocatoriona:link{
+  color: #FFF;
+  text-decoration: none;
+}
+
+.nuevaconvocatoria{
+  padding: 0px 10px;
+}
+
+div.titulo{
+  background-color: #E3E6EA;
+  margin-bottom: 25px;
+  padding: 10px 0px 10px 0px;
+}
+
+div.titulo h5{
+  color: #a6a6a6;
+  font-size: 1.5rem;
+}
+
+.table{
+  margin-bottom: 0px;
+}
+
+table th, table td{
+  text-align: left;
+}
+
+table th{
+  background-color: #3A5787;
+  color: #fff;
+}
+
+.cuots th{
+  background-color: #3A5787;
+  color: #fff;
+}
+
+div.estadofin, div.cuotas, div.recientes{
+  margin-bottom: 25px;
+  border-bottom: 1px solid #a6a6a6;
+  padding-bottom: 20px;
+}
+
+h4{
+  margin-bottom: 20px;
+}
+
+div.publicacion{
+  border-bottom: 1px solid #a6a6a6;
+  padding: 20px;
+}
+
+div.publicacion img{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  float: left;
+  margin-right: 10px;
+}
+
+.publico{
+  text-align: left;
+  line-height: 4;
+}
+
+.imgperfil{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.cabeceraUsuario{
+  margin: 100px;
+}
+
+.editarImagenUsuario{
+  width: 100px;
+  height: 100px;
+}
+
+.AsociacionesImg{
+  width: 100px;
+  height: 100px;
+  border-radius: 15px;
+}
+
+.table > tbody > tr > td{
+  vertical-align: middle;
+}
+.table > tbody > tr:nth-child(even){
+  vertical-align: middle;
+  background-color: #E3E6EA;
+}
+
+.table > thead > tr > td{
+  font-size: 1.3rem;
+  font-weight: bold;
+  background-color: #434242;
+  color: #FFF;
+}
+
+.cajacontroles{
+  margin: 20px 0px;
+}
+
+.controles{
+  background-color: #434242;
+  border: none;
+  outline: none;
+  color: #FFF;
+  font-size: 2rem;
+  padding: 5px 15px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.linkfinanzas{
+  background-color: #434242;
+  display: block;
+  color: #FFF;
+  font-size: 2rem;
+  width: 50px;
+  padding: 5px 0px;
+  margin: 0px auto 5px;
+  border-radius: 5px;
+}
+.linkfinanzas:hover{
+  color: #a6a6a6;
+}
+
+.finanzasActivo{
+  color: #04B45F;
+}
+
+.btnEdit{
+  background-color: #3A5787;
+  color: #FFF;
+}
+
+.btn-primary{
+  background-color: #3A5787;
+}
+
+.labeles{
+  text-align: right;
+  line-height: 2.4;
+}
+
+.obligatorio{
+  color: red;
+}
+
+.controltabla{
+  background-color: #434242;
+  border: none;
+  outline: none;
+  color: #FFF;
+  padding: 5px 15px;
+  margin-bottom: 5px;
+  margin-top: 2px;
+  border-radius: 5px;
+}
+.btnCuota{
+  background-color: #04B45F;
+  color: #FFF;
+}
+
+.word{
+  width: 30px;
+  height: 30px;
+  background-image: url('../img/word.png');
+  background-size: cover;
+}
+.pdf{
+  width: 30px;
+  height: 30px;
+  background-image: url('../img/pdf.png');
+  background-size: cover;
+}
+
+.textoActas{
+  width: 100%;
+  height: 180px;
+  resize: none;
+}
