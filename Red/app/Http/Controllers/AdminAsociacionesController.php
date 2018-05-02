@@ -11,17 +11,22 @@ class AdminAsociacionesController extends Controller
 {
     //
     public function index(){
-      $tablaAsociaciones = \DB::table('asociaciones')
-        ->orderBy('id_asociacion','desc')
-        ->get();
+      if( Auth::user()->privilegios == 'Administrador' ){
+        $tablaAsociaciones = \DB::table('asociaciones')
+          ->orderBy('id_asociacion','desc')
+          ->get();
 
-      $nombreAsociacion = \DB::table('asociaciones')
-        ->where('id_asociacion', '=', Auth::user()->asociacion)
-        ->get();
+        $nombreAsociacion = \DB::table('asociaciones')
+          ->where('id_asociacion', '=', Auth::user()->asociacion)
+          ->get();
 
-      return View('asociaciones')
-        ->with('registrosAsociaciones', $tablaAsociaciones)
-        ->with('nombreAsociacion', $nombreAsociacion);
+        return View('asociaciones')
+          ->with('registrosAsociaciones', $tablaAsociaciones)
+          ->with('nombreAsociacion', $nombreAsociacion);
+      }else if(Auth::user()->privilegios == 'Normal'){
+        return 'Sin permisos';
+      }
+
     }
 
     public function __construct()

@@ -27,7 +27,7 @@ Cuotas
   @if($errors->any())
     <div class="alert alert-danger alert-dismissable">
       <ul>
-        <li>Error al agregar Usuario</li>
+        <li>Error al agregar registro</li>
       </ul>
     </div>
     <div class="alert alert-warning alert-dismissable">
@@ -51,7 +51,7 @@ Cuotas
 </div>
 <div class="col-md-9" id="ControlesCuotas">
   <div class="col-md-2 cajacontroles">
-    <button id="btnAgregarCuota" type="button" name="button" class="controles" data-toggle="modal" data-target="#registrarCuota" data-whatever="@mdo">
+    <button id="btnAgregarAsociacion" type="button" name="button" class="controles" data-toggle="modal" data-target="#agregarAsociacion" data-whatever="@mdo">
       <i class="fas fa-building"></i>
     </button>
     <p>Agregar Asociacion</p>
@@ -77,13 +77,13 @@ Cuotas
 
 <div class="col-md-3 cajacontroles">
   <div class="col-md-6">
-      <a href="{{ url('/admin/finanzas') }}" class="linkfinanzas" id="btnCuotas">
+      <a href="{{ url('/admin/finanzas') }}" class="linkfinanzas">
         <i class="fas fa-chart-line"></i>
       </a>
       <p>Estado Financiero</p>
   </div>
   <div class="col-md-6">
-    <button type="submit" name="button" class="controles {{ Request::is('admin/cuotas') ? 'finanzasActivo' : '' }}" id="btnCuotas">
+    <button type="submit" name="button" class="controles {{ Request::is('admin/cuotas') ? 'finanzasActivo' : '' }}">
       <i class="fas fa-table"></i>
     </button>
     <p>Cuotas</p>
@@ -116,19 +116,156 @@ Cuotas
         @forelse($cuotas as $cuot)
         <tr>
           <td>{{ $cuot->nombre }}</td>
-          <td class="Enero"></td>
-          <td class="Febrero"></td>
-          <td class="Marzo"></td>
-          <td class="Abril"></td>
-          <td class="Mayo"></td>
-          <td class="Junio"></td>
-          <td class="Julio"></td>
-          <td class="Agosto"></td>
-          <td class="Septiembre"></td>
-          <td class="Octubre"></td>
-          <td class="Noviembre"></td>
-          <td class="Diciembre"></td>
-          <td class="Adeudo"></td>
+          <td class="Enero" data-idcuot="{{ $cuot->id_cuota }}">
+            @if( $cuot->enero == null && 1 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="1" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->enero >= 50)
+                <span style="color:green;font-weight:bold;">{{$cuot->enero}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->enero}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Febrero">
+            @if( $cuot->febrero == null && 2 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="2" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->febrero >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->febrero}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->febrero}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Marzo">
+            @if( $cuot->marzo == null && 3 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="3" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->marzo >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->marzo}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->marzo}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Abril">
+            @if( $cuot->abril == null && 4 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="4" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->abril >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->abril}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->abril}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Mayo">
+            @if( $cuot->mayo == null && 5 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="5" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->mayo >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->mayo}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->mayo}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Junio">
+            @if( $cuot->junio == null && 6 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="6" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->junio >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->junio}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->junio}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Julio">
+            @if( $cuot->julio == null && 7 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="7" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->julio >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->julio}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->julio}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Agosto">
+            @if( $cuot->agosto == null && 8 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="8" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->agosto >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->agosto}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->agosto}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Septiembre">
+            @if( $cuot->septiembre == null && 9 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="9" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->septiembre >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->septiembre}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->septiembre}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Octubre">
+            @if( $cuot->octubre == null && 10 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="10" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->octubre >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->octubre}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->octubre}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Noviembre">
+            @if( $cuot->noviembre == null && 11 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="11" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->noviembre >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->noviembre}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->noviembre}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Diciembre">
+            @if( $cuot->diciembre == null && 12 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="12" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->diciembre >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->diciembre}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->diciembre}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Adeudo">
+            @if( $cuot->adeudo == 0)
+              <span style="color:green;font-weight:bold;">{{ $cuot->adeudo }}</span></td>
+            @else
+              <span style="color:red;font-weight:bold;">{{ $cuot->adeudo }}</span></td>
+            @endif
           <td><button
                 type="button"
                 name="button"
@@ -142,7 +279,6 @@ Cuotas
           </td>
         </tr>
         @empty
-        <p>No existen Tablas</p>
         @endforelse
       </tbody>
     </table>
@@ -158,7 +294,7 @@ Cuotas
         <h4 class="modal-title" id="registrarCuotaLabel">Cuotas</h4>
       </div>
       <div class="modal-body">
-        {!! Form::open(array('route'=>['admin.finanzas.edit', $cuot->organizacion], 'method'=>'GET')) !!}
+        {!! Form::open(array('route'=>['admin.cuotas.edit', '1'], 'method'=>'GET')) !!}
         <input type="hidden" name="idCuota" value="" id="idCuota">
           <div class="form-group row">
             <label for="meses" class="col-md-3 labeles">Mes:</label>
@@ -182,7 +318,7 @@ Cuotas
           <div class="form-group row">
             <label for="cantidadCuota" class="col-md-3 labeles">Cuota:</label>
               <div class="col-md-9">
-                <input type="number" name="cantidadCuota" value="" class="form-control">
+                <input type="number" name="cantidadCuota" value="50" class="form-control">
               </div>
           </div>
         </div>
@@ -203,8 +339,8 @@ Cuotas
         <h4 class="modal-title" id="nuevaTablaLabel">Nueva Tabla</h4>
       </div>
       <div class="modal-body">
-        {{ Form::open(array('url' => '/admin/finanzas')) }}
-        <input type="hidden" name="Caso" value="3">
+        {{ Form::open(array('url' => '/admin/cuotas')) }}
+        <input type="hidden" name="Caso" value="2">
         <div class="form-group row">
           <label for="anioTabla" class="col-md-2 labeles">Año:</label>
           <div class="col-md-10">
@@ -220,6 +356,48 @@ Cuotas
     </div>
   </div>
 </div>
+<!--Modal para agregar tabla a  Cuotas -->
+<div class="modal fade" id="agregarAsociacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="">Agregar Asociación</h4>
+      </div>
+      <div class="modal-body">
+        {{ Form::open(array('url' => '/admin/cuotas')) }}
+        <input type="hidden" name="Caso" value="1">
+        <div class="form-group row">
+          <label for="anioAsociation" class="col-md-2 labeles">Año:</label>
+          <div class="col-md-10">
+            <select class="form-control" name="anioAsociation">
+              <option value="2018">2018</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="asociation" class="col-md-2 labeles">Organización:</label>
+          <div class="col-md-10">
+            <select class="form-control" name="asociation">
+              @forelse($asociaciones as $asoc)
+              <option value="{{ $asoc->id_asociacion }}">{{ $asoc->nombre }}</option>
+              @empty
+              <option value="">Sin Registros</option>
+              @endforelse
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        {{ Form::submit('Guardar', array('class' => 'btn btn-primary')) }}
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+      </div>
+        {{ Form::close() }}
+    </div>
+  </div>
+</div>
+
+<input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
 @endsection
 
 @section('scripts')
@@ -240,7 +418,7 @@ Cuotas
 
     function Mes(caso, id){
       if(mm == caso){
-        $(id).css('color','red');
+        $(id).css('color','yellow');
       }
     }
     Mes('01','#Enero');
@@ -256,21 +434,32 @@ Cuotas
     Mes('11','#Noviembre');
     Mes('12','#Diciembre');
 
-    $('.Adeudo').text(mm * 50);
-
-    $("#btnNuevoConcepto").on('click', function(){
-      $('#fecha_sistema').val(today);
-    });
-    $('#btnFinanzas').on('click', function(){
-
-    });
-    $('#btnCuotas').on('click', function(){
-
-    });
     $('.btnCuota').on('click', function(){
       var id = $(this).data('id');
       $('#idCuota').val(id);
     });
+
+    $('.meses').each(function(){
+      var mes = $(this).val();
+      var idcuota = $(this).data('idcuot');
+      var fila = $(this).parent('td').siblings(".Adeudo").css('color', 'red');
+      $.ajax({
+        method:'POST',
+        headers: {'X-CSRF-TOKEN': $('#token').val()},
+        url: '/admin/cuotas/adeudos',
+        data: {
+          mes: mes,
+          id: idcuota
+        },
+        beforeSend: function(){
+          console.log("Cargando");
+        }
+      }).done(function(datos){
+          console.log(datos);
+          fila.text(datos + ".00");
+      });
+    });
+
   });
 </script>
 

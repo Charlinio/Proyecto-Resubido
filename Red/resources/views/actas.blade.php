@@ -23,21 +23,7 @@
 <div class="row titulo">
   <h5><i class="fas fa-book"></i> Actas</h5>
 </div>
-<div class="col-md-3 cajacontroles">
-  <div class="col-md-6">
-    <button type="button" name="button" class="controles" data-toggle="modal" data-target="#realizarConvocatoria" data-whatever="@mdo" id="btnrealizarconvocatoria">
-      <i class="fas fa-file"></i>
-    </button>
-    <p>Nueva Convocatoria</p>
-  </div>
-  <div class="col-md-6">
-    <button type="button" name="button" class="controles" data-toggle="modal" data-target="#registrarActa" data-whatever="@mdo">
-      <i class="fas fa-file-alt"></i>
-    </button>
-    <p>Nueva Acta</p>
-  </div>
-</div>
-<div class="col-md-9">
+<div class="col-md-12">
   @if($errors->any())
     <div class="alert alert-danger alert-dismissable">
       <ul>
@@ -63,54 +49,96 @@
     </div>
   @endif
 </div>
+<input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
+@if( Auth::user()->privilegios == 'Administrador' )
 <div class="col-md-12">
-  <div class="col-md-10">
-    <p style="margin-bottom:20px;"><b>Actas</b></p>
-    @forelse($actas as $ac)
-    <div class="col-md-2">
-      <button type="button" name="button" class="eliminarconvocatoria"><i class="fas fa-times"></i></button>
-      <button type="button" name="button" class="nuevaacta"><i class="fas fa-file-alt fa-5x"></i></button>
-      <p data-mesacta="{{ $ac->ref }}" class="mesActa">Enero</p>
-      <div class="col-md-6">
-        <button type="button" name="button" class="nuevaacta word"></button>
-      </div>
-      <div class="col-md-6">
-        <button type="button" name="button" class="nuevaacta pdf"></button>
-      </div>
-    </div>
-    @empty
-    @endforelse
-    <div class="col-md-12" style="margin-top:40px;">
-      <select class="" name="actaAnio" style="width:200px;height:30px;">
-        <option value="1">2018</option>
-      </select>
-    </div>
-  </div>
   <div class="col-md-2">
-    <p><b>Convocatorias</b></p>
-    <div class="col-md-12">
-      <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
+    <p style="margin-bottom:20px;background-color:#434242;padding: 6px 0px;color:#fff;"><b>Convocatorias</b></p>
+    <div class="col-md-12" id="convocatoriasPendientes">
       {!! Form::open(array('url' => '/admin/actas/ordendia')) !!}
       @forelse($convocatoriaspendientes as $c)
-      <div class="col-md-12">
-        <button type="button" name="button" class="eliminarconvocatoria"><i class="fas fa-times"></i></button>
-        <button type="submit" name="button" class="nuevaacta btnVerConvocatoria" style="color:#6FBB7A;"
-        data-toggle="modal"
-        data-target="#editarConvocatoria"
-        data-whatever="@mdo"
-        data-ref="{{ $c->ref }}"
-        data-fechac="{{ $c->fecha_creacion }}"
-        data-sesion="{{ $c->sesion }}"
-        data-ciudad="{{ $c->ciudad }}"
-        data-lugar="{{ $c->lugar }}"
-        data-hora="{{ $c->hora }}">
-          <i class="fas fa-file fa-5x"></i>
-        </button>
-        <p class="MesConvocatoria" data-mes="{{ $c->ref }}">{{ $c->ref }}</p>
-      </div>
+        @if($resultado != null)
+          @for($x = 0;$x<$numero;$x++)
+            @if(array_key_exists($x , $resultado))
+              @if($c->ref == $resultado[$x])
+                <div class="col-md-12">
+                  <button type="button" name="button" class="eliminarconvocatoria btneliminarconvocatoria" data-toggle="modal"
+                   data-target="#eliminarConvocatoria" data-whatever="@mdo" data-referencia="{{ $c->ref }}">
+                    <i class="fas fa-times"></i>
+                  </button>
+                  <button type="submit" name="button" class="nuevaacta btnVerConvocatoria" style="color:gray;"
+                  data-toggle="modal"
+                  data-target="#editarConvocatoria"
+                  data-whatever="@mdo"
+                  data-ref="{{ $c->ref }}"
+                  data-fechac="{{ $c->fecha_creacion }}"
+                  data-sesion="{{ $c->sesion }}"
+                  data-ciudad="{{ $c->ciudad }}"
+                  data-lugar="{{ $c->lugar }}"
+                  data-hora="{{ $c->hora }}">
+                    <i class="fas fa-file fa-5x"></i>
+                  </button>
+                  <p class="MesConvocatoria" data-mes="{{ $c->ref }}">{{ $c->ref }}</p>
+                </div>
+              @endif
+            @endif
+          @endfor
+        @endif
       {{ Form::close() }}
       @empty
       @endforelse
+      <div class="col-md-12">
+        <button type="button" name="button" class="nuevaacta" data-toggle="modal" data-target="#realizarConvocatoria" data-whatever="@mdo" style="color:#E1C363;">
+          <i class="fas fa-plus fa-5x"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  @endif
+  @if( Auth::user()->privilegios == 'Administrador' )
+    <div class="col-md-10">
+      <p style="margin-bottom:20px;background-color:#434242;padding: 6px 0px;color:#fff;"><b>Actas</b></p>
+      <div class="col-md-12" style="margin-bottom:40px;">
+        <label for="actaAnio">Año:</label>
+        <select class="" name="actaAnio" style="width:200px;height:30px;margin-left:5px;" id="actaAnio">
+          <option value="">Todos los Años</option>
+          <option value="2018">2018</option>
+          <option value="2017">2017</option>
+        </select>
+      </div>
+  @else
+    <div class="col-md-12">
+      <p style="margin-bottom:20px;background-color:#434242;padding: 6px 0px;color:#fff;"><b>Actas</b></p>
+      <div class="col-md-12" style="margin-bottom:40px;">
+        <label for="actaAnio">Año:</label>
+        <select class="" name="actaAnio" style="width:200px;height:30px;margin-left:5px;" id="actaAnio">
+          <option value="">Todos los Años</option>
+          <option value="2018">2018</option>
+          <option value="2017">2017</option>
+        </select>
+      </div>
+  @endif
+
+    <div id="poneractas">
+      @forelse($actas as $ac)
+        <div class="col-md-2 cajaactas" style="margin-bottom:30px;">
+          <button type="button" name="button" class="eliminarconvocatoria btneliminaracta" data-toggle="modal"
+           data-target="#eliminarActa" data-whatever="@mdo" data-idacta="{{ $ac->id_acta }}" data-refacta="{{ $ac->ref }}">
+            <i class="fas fa-times"></i>
+          </button>
+          <button type="button" name="button" class="nuevaacta"><i class="fas fa-file-alt fa-5x"></i></button>
+          <p data-mesacta="{{ $ac->ref }}" class="mesActa">Enero</p>
+          <a href="#">Descargar</a>
+        </div>
+      @empty
+      @endforelse
+    </div>
+    @if( Auth::user()->privilegios == 'Administrador' )
+    <div class="col-md-2">
+      <button type="button" name="button" class="nuevaacta" data-toggle="modal" data-target="#registrarActa" data-whatever="@mdo" style="color:#E1C363;">
+        <i class="fas fa-plus fa-5x"></i>
+      </button>
+    @endif
     </div>
   </div>
 </div>
@@ -125,14 +153,22 @@
       </div>
       <div class="modal-body">
 
-        {!! Form::open(array('route'=>['admin.actas.edit', $c->ref], 'method'=>'GET')) !!}
+        {!! Form::open(array('route'=>['admin.actas.edit', '$c->ref'], 'method'=>'GET')) !!}
         <div class="input-group col-md-12">
           <label for="referencia">Referencia: </label>
 
           <select class="form-control" name="referencia" id="referenciaActa">
             <option value="">Seleccionar Referencia</option>
             @forelse($convocatoriaspendientes as $convoca)
-              <option value="{{ $convoca->ref }}">{{ $convoca->ref }}</option>
+              @if($resultado != null)
+                @for($x = 0;$x<$numero;$x++)
+                  @if(array_key_exists($x , $resultado))
+                    @if($convoca->ref == $resultado[$x])
+                      <option value="{{ $convoca->ref }}">{{ $convoca->ref }}</option>
+                    @endif
+                  @endif
+                @endfor
+              @endif
             @empty
             @endforelse
           </select>
@@ -293,6 +329,52 @@
     </div>
   </div>
 </div>
+<!-- Modal para eliminar Convocatoria -->
+<div class="modal fade" id="eliminarConvocatoria" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="">Eliminando Convocatoria: <b id="eliminando">Fecha</b></h4>
+      </div>
+      {!! Form::open(array('route'=>['admin.actas.destroy', '1'], 'method'=>'delete')) !!}
+      <div class="modal-body">
+        <input type="hidden" name="Caso" value="1">
+        <input type="hidden" name="referencia" value="" id="referencia">
+        <label for="">Seguro que desea eliminar esta Convocatoria?</label>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-danger" name="button" id="btnEliminar">Eliminar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+      </div>
+        {!! Form::close() !!}
+    </div>
+  </div>
+</div>
+<!-- Modal para eliminar Acta -->
+<div class="modal fade" id="eliminarActa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="">Eliminando Acta: <b id="eliminando2">Fecha</b></h4>
+      </div>
+      {!! Form::open(array('route'=>['admin.actas.destroy', $ac->ref], 'method'=>'delete')) !!}
+      <div class="modal-body">
+        <input type="hidden" name="Caso" value="2">
+        <input type="hidden" name="idacta" value="" id="idacta">
+        <input type="hidden" name="refereacta" value="" id="refereacta">
+        <label for="">Seguro que desea eliminar esta Acta?</label>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-danger" name="btna" id="btna" value="7">Eliminar solo Acta</button>
+        <button type="submit" class="btn btn-danger" name="btna" id="btnac" value="8">Eliminar Acta y Convocatoria ligada</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+      </div>
+        {!! Form::close() !!}
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -336,10 +418,12 @@
       $('.mesActa').each(function(){
         var acta = $(this).data('mesacta');
         var mes = acta.substring(5,7);
+        var dia = acta.substring(8,10);
+        var anio = acta.substring(0,4);
         var mm = parseInt(mes);
         var months = [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ];
-        $(this).text(months[mm-1]);
+        $(this).text(dia + " de " + months[mm-1] + " de " +anio);
       });
 
       $('#btnrealizarconvocatoria').on('click', function(){
@@ -451,10 +535,59 @@
             $('#insertarActas').append(ordenDefinitiva);
             z++;
           }
-          var OrdenesDia = "<input type='text' name='OrdenesDia' value='"+z+"'>";
+          var OrdenesDia = "<input type='hidden' name='OrdenesDia' value='"+z+"'>";
           $('#insertarActas').append(OrdenesDia);
         });
       });
+
+      $('#actaAnio').on('change', function(){
+        var anio = $(this).val();
+        $.ajax({
+          method:'POST',
+          headers: {'X-CSRF-TOKEN': $('#token').val()},
+          url: '/admin/actas/actasanio',
+          data: {
+            ref: anio
+          },
+          beforeSend: function(){
+            console.log("Cargando..");
+          }
+        }).done(function(datos){
+          $('#poneractas').empty();
+          var months = [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+          "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ];
+          for (datas in datos){
+            var poneractas = "";
+            var fecha = datos[datas].ref;
+            var dia = fecha.substring(8,10);
+            var mes = fecha.substring(5,7);
+            var anio = fecha.substring(0,4);
+            var mm = parseInt(mes);
+            poneractas += "<div class='col-md-2 cajaactas' style='margin-bottom:30px;'>";
+            poneractas +=  "<button type='button' name='button' class='eliminarconvocatoria'><i class='fas fa-times'></i></button>";
+            poneractas +=   "<button type='button' name='button' class='nuevaacta'><i class='fas fa-file-alt fa-5x'></i></button>";
+            poneractas +=   "<p>"+dia+" de " + months[mm-1] +" de "+anio+"</p>";
+            poneractas +=   "<a href='#'>Descargar</a>";
+            poneractas += "</div>";
+            $('#poneractas').append(poneractas);
+            console.log(datos[datas].ref);
+          }
+        });
+      });
+
+      $('.btneliminarconvocatoria').on('click', function(){
+        var referencia = $(this).data('referencia');
+        $('#referencia').val(referencia);
+        $('#eliminando').text(referencia);
+      });
+      $('.btneliminaracta').on('click', function(){
+        var id = $(this).data('idacta');
+        var refacta = $(this).data('refacta');
+        $('#idacta').val(id);
+        $('#eliminando2').text(refacta);
+        $('#refereacta').val(refacta);
+      });
+
 
     });
   </script>

@@ -13,24 +13,52 @@ class AdminActasController extends Controller
 {
     //
     public function index(){
-      $nombreAsociacion = \DB::table('asociaciones')
-        ->where('id_asociacion', '=', Auth::user()->asociacion)
+        $nombreAsociacion = \DB::table('asociaciones')
+          ->where('id_asociacion', '=', Auth::user()->asociacion)
+          ->get();
+
+        $convocatoriaspendientes = \DB::table('convocatorias')
+        ->orderBy('ref')
         ->get();
 
-      $convocatoriaspendientes = \DB::table('convocatorias')
-      ->get();
+        $ordendia = \DB::table('orden_dia')
+        ->get();
 
-      $ordendia = \DB::table('orden_dia')
-      ->get();
+        $actas = \DB::table('actas')
+        ->orderBy('ref')
+        ->get();
 
-      $actas = \DB::table('actas')
-      ->get();
+        $cc = \DB::table('convocatorias')->pluck('ref')->toArray();
+        $aa = \DB::table('actas')->pluck('ref')->toArray();
 
-      return view('actas')
-      ->with('nombreAsociacion', $nombreAsociacion)
-      ->with('convocatoriaspendientes', $convocatoriaspendientes)
-      ->with('ordendia', $ordendia)
-      ->with('actas', $actas);
+        $resultado = array_diff($cc,$aa);
+        $numero = count($cc);
+
+        $reporteActa = \DB::select("
+          select fecha_creacion, convocatorias.ref, sesion, hora, lugar, ciudad, orden_dia, descripcion, hora_finalizacion
+          from convocatorias, actas, orden_dia
+          where convocatorias.ref = actas.ref
+          and actas.ref = orden_dia.ref
+        ");
+
+        $actonas = '';
+        $valores = '';
+        for($i=0; $i<count($reporteActa);$i++){
+          $actonas = $actonas . '"' . $reporteActa[$i]->ref.'",';
+          $valores = $valores . '""';
+        }
+        dd($actonas);
+
+        //dd(substr($aa[0], 0, 4));
+        return View('actas')
+        ->with('nombreAsociacion', $nombreAsociacion)
+        ->with('convocatoriaspendientes', $convocatoriaspendientes)
+        ->with('resultado',$resultado)
+        ->with('numero',$numero)
+        ->with('ordendia', $ordendia)
+        ->with('actas', $actas);
+
+
     }
 
     public function __construct()
@@ -99,6 +127,18 @@ class AdminActasController extends Controller
       }
     }
 
+    public function actasAnio(Request $req){
+      $actas = \DB::table('actas')
+      ->where('ref', 'like','%'.$req->ref.'%')
+      ->orderBy('ref')
+      ->get();
+
+      if ($req->ajax()) {
+        return $actas;
+      }
+
+    }
+
     public function edit(Request $req){
       Acta::create([
         'ref' => $req->referencia
@@ -112,5 +152,25 @@ class AdminActasController extends Controller
       }
       return redirect()->to('/admin/actas')
         ->with('mensaje','Acta Creada');
+    }
+
+    public function destroy(Request $req){
+      if($req->Caso == '1'){
+        $ref = Convocatoria::find($req->referencia);
+        $ref->delete();
+        return redirect('/admin/actas')->with('mensaje','Convocatoria Eliminada');
+      }else if($req->Caso == '2'){
+        if($req->btna == '7'){
+          $ref = Acta::find($req->idacta);
+          $ref->delete();
+          return redirect('/admin/actas')->with('mensaje','Acta Eliminada');
+        }else if($req->btna == '8'){
+          $ref = Acta::find($req->idacta);
+          $ref->delete();
+          $ref2 = Convocatoria::find($req->refereacta);
+          $ref2->delete();
+          return redirect('/admin/actas')->with('mensaje','Acta y Convocatoria Eliminadas');
+        }
+      }
     }
 }

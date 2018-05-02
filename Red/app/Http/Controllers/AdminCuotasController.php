@@ -12,6 +12,11 @@ class AdminCuotasController extends Controller
 {
     //
     public function index(){
+      if( Auth::user()->privilegios == 'Administrador' ){
+
+      }else if(Auth::user()->privilegios == 'Normal'){
+        return 'Sin permisos'
+      }
       $nombreAsociacion = \DB::table('asociaciones')
         ->where('id_asociacion', '=', Auth::user()->asociacion)
         ->get();

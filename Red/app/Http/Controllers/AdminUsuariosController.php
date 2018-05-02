@@ -11,24 +11,28 @@ class AdminUsuariosController extends Controller
 {
     //
     public function index(){
-      $registros = \DB::table('users')
-        ->select('users.*','asociaciones.*')
-        ->join('asociaciones', 'users.asociacion', '=', 'asociaciones.id_asociacion')
-        ->orderBy('id','asc')
-        //->take(10)
-        ->get();
+      if( Auth::user()->privilegios == 'Administrador' ){
+        $registros = \DB::table('users')
+          ->select('users.*','asociaciones.*')
+          ->join('asociaciones', 'users.asociacion', '=', 'asociaciones.id_asociacion')
+          ->orderBy('id','asc')
+          //->take(10)
+          ->get();
 
-      $nombreAsociacion = \DB::table('asociaciones')
-        ->where('id_asociacion', '=', Auth::user()->asociacion)
-        ->get();
+        $nombreAsociacion = \DB::table('asociaciones')
+          ->where('id_asociacion', '=', Auth::user()->asociacion)
+          ->get();
 
-      $asociaciones = \DB::table('asociaciones')
-        ->get();
+        $asociaciones = \DB::table('asociaciones')
+          ->get();
 
-      return view('usuarios')
-        ->with('usuarios', $registros)
-        ->with('asociaciones', $asociaciones)
-        ->with('nombreAsociacion', $nombreAsociacion);
+        return view('usuarios')
+          ->with('usuarios', $registros)
+          ->with('asociaciones', $asociaciones)
+          ->with('nombreAsociacion', $nombreAsociacion);
+      }else if(Auth::user()->privilegios == 'Normal'){
+        return 'Sin permisos';
+      }
 
     }
 

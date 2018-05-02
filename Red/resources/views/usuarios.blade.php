@@ -30,7 +30,7 @@ Usuarios
   </button>
   <p>Nuevo usuario</p>
   <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
-  <input type="search" name="" value="" id="txtBusqueda">
+  <input type="hidden" name="" value="" id="txtBusqueda">
 </div>
 <div class="col-md-10 cajacontroles">
   @if($errors->any())

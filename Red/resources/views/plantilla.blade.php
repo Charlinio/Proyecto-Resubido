@@ -23,32 +23,15 @@ Inicio
 <div class="row titulo">
   <h5><i class="fas fa-home"></i> Inicio</h5>
 </div>
-<div class="row">
-  <li class="listaconvocatoria">
-    <a href="#" type="button" data-toggle="modal" data-target="#realizarConvocatoria" data-whatever="@mdo" class="convocatoriona">
-      <i class="fas fa-calendar-alt"></i> Evento +
-    </a>
-  </li>
-  <li class="listaconvocatoria">
-    <a href="#" type="button" data-toggle="modal" data-target="#realizarConvocatoria" data-whatever="@mdo" class="convocatoriona">
-      <i class="fas fa-book"></i> Acta +
-    </a>
-  </li>
- <li class="listaconvocatoria">
-   <a href="#" type="button" data-toggle="modal" data-target="#realizarConvocatoria" data-whatever="@mdo" class="convocatoriona">
-     <i class="fas fa-file"></i> Convocatoria +
-   </a>
- </li>
-</div>
-
+@if( Auth::user()->privilegios == 'Administrador')
   <div class="recientes">
     <h4>Actividad Reciente</h4>
     <table class="table table-dark">
-      <thead>
+      <thead class="tablactividades">
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">Fecha</th>
-          <th scope="col">Actividad</th>
+          <td>#</td>
+          <td>Fecha</td>
+          <td>Actividad</td>
         </tr>
       </thead>
       <tbody>
@@ -74,6 +57,7 @@ Inicio
     </div>
 
   </div>
+  @endif
   <div class="col-md-12 cuotas">
     <h4>Estado Financiero</h4>
     <canvas id="myChart" width="200" height="50"></canvas>
@@ -83,88 +67,179 @@ Inicio
     <table class="table table-dark">
       <thead class="cuots">
         <tr>
-          <th scope="col">Organizacion</th>
-          <th scope="col">Enero</th>
-          <th scope="col">Febrero</th>
-          <th scope="col">Marzo</th>
-          <th scope="col">Abril</th>
-          <th scope="col">Mayo</th>
-          <th scope="col">Junio</th>
-          <th scope="col">Julio</th>
-          <th scope="col">Agosto</th>
-          <th scope="col">Septiembre</th>
-          <th scope="col">Ocubre</th>
-          <th scope="col">Noviembre</th>
-          <th scope="col">Diciembre</th>
-          <th scope="col">Adeudo</th>
+          <td>Organizacion</td>
+          <td>Enero</td>
+          <td>Febrero</td>
+          <td>Marzo</td>
+          <td>Abril</td>
+          <td>Mayo</td>
+          <td>Junio</td>
+          <td>Julio</td>
+          <td>Agosto</td>
+          <td>Septiembre</td>
+          <td>Ocubre</td>
+          <td>Noviembre</td>
+          <td>Diciembre</td>
+          <td>Adeudo</td>
         </tr>
       </thead>
       <tbody>
+        @forelse($cuotas as $cuot)
         <tr>
-          <td>Celebrando la vida</td>
-          <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-          <td>0</td>
+          <td>{{ $cuot->nombre }}</td>
+          <td class="Enero" data-idcuot="{{ $cuot->id_cuota }}">
+            @if( $cuot->enero == null && 1 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="1" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->enero >= 50)
+                <span style="color:green;font-weight:bold;">{{$cuot->enero}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->enero}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Febrero">
+            @if( $cuot->febrero == null && 2 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="2" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->febrero >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->febrero}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->febrero}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Marzo">
+            @if( $cuot->marzo == null && 3 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="3" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->marzo >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->marzo}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->marzo}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Abril">
+            @if( $cuot->abril == null && 4 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="4" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->abril >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->abril}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->abril}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Mayo">
+            @if( $cuot->mayo == null && 5 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="5" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->mayo >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->mayo}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->mayo}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Junio">
+            @if( $cuot->junio == null && 6 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="6" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->junio >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->junio}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->junio}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Julio">
+            @if( $cuot->julio == null && 7 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="7" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->julio >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->julio}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->julio}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Agosto">
+            @if( $cuot->agosto == null && 8 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="8" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->agosto >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->agosto}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->agosto}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Septiembre">
+            @if( $cuot->septiembre == null && 9 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="9" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->septiembre >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->septiembre}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->septiembre}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Octubre">
+            @if( $cuot->octubre == null && 10 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="10" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->octubre >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->octubre}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->octubre}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Noviembre">
+            @if( $cuot->noviembre == null && 11 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="11" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->noviembre >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->noviembre}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->noviembre}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Diciembre">
+            @if( $cuot->diciembre == null && 12 <= $messhoy )
+              <span style="color:red;font-weight:bold;">0.00</span>
+              <input type="hidden" name="diames" value="12" class="meses" data-idcuot="{{ $cuot->id_cuota }}">
+            @else
+              @if($cuot->diciembre >=50)
+                <span style="color:green;font-weight:bold;">{{$cuot->diciembre}}</span>
+              @else
+                <span style="color:red;font-weight:bold;">{{$cuot->diciembre}}</span>
+              @endif
+            @endif
+          </td>
+          <td class="Adeudo">
+            @if( $cuot->adeudo == 0)
+              <span style="color:green;font-weight:bold;">{{ $cuot->adeudo }}</span></td>
+            @else
+              <span style="color:red;font-weight:bold;">{{ $cuot->adeudo }}</span></td>
+            @endif
         </tr>
-        <tr>
-          <td>Celebrando la vida</td>
-          <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-          <td>0</td>
-        </tr>
-        <tr>
-          <td>Celebrando la vida</td>
-          <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-          <td>0</td>
-        </tr>
-        <tr>
-          <td>Celebrando la vida</td>
-          <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-          <td>0</td>
-        </tr>
-        <tr>
-          <td>Celebrando la vida</td>
-          <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-          <td>0</td>
-        </tr>
-        <tr>
-          <td>Celebrando la vida</td>
-          <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-          <td>0</td>
-        </tr>
-        <tr>
-          <td>Celebrando la vida</td>
-          <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-          <td>0</td>
-        </tr>
-        <tr>
-          <td>Celebrando la vida</td>
-          <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-          <td>0</td>
-        </tr>
-        <tr>
-          <td>Celebrando la vida</td>
-          <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-          <td>0</td>
-        </tr>
-        <tr>
-          <td>Celebrando la vida</td>
-          <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-          <td>0</td>
-        </tr>
-        <tr>
-          <td>Celebrando la vida</td>
-          <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-          <td>0</td>
-        </tr>
-        <tr>
-          <td>Celebrando la vida</td>
-          <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-          <td>0</td>
-        </tr>
-        <tr>
-          <td>Celebrando la vida</td>
-          <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-          <td>0</td>
-        </tr>
+        @empty
+        @endforelse
       </tbody>
     </table>
   </div>
@@ -260,12 +335,12 @@ Inicio
 
       // The data for our dataset
       data: {
-          labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+          labels: [{!! $meses !!}],
           datasets: [{
               label: "Saldo",
-              backgroundColor: '#7FC6A4',
-              borderColor: '#7FC6A4',
-              data: [0, 10, 5, 2, 20, 30, 45, 42, 50, 51, 52, 60],
+              backgroundColor: '#fff',
+              borderColor: '#3A5787',
+              data: [{!! $valores !!}],
           }]
       },
 

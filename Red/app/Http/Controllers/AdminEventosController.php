@@ -11,17 +11,21 @@ class AdminEventosController extends Controller
 {
     //
     public function index(){
-      $registros = \DB::table('eventos')
-        ->orderBy('id_evento','desc')
-        ->get();
+      if( Auth::user()->privilegios == 'Administrador' ){
+        $registros = \DB::table('eventos')
+          ->orderBy('id_evento','desc')
+          ->get();
 
-      $nombreAsociacion = \DB::table('asociaciones')
-        ->where('id_asociacion', '=', Auth::user()->asociacion)
-        ->get();
+        $nombreAsociacion = \DB::table('asociaciones')
+          ->where('id_asociacion', '=', Auth::user()->asociacion)
+          ->get();
 
-      return view('eventos')
-      ->with('eventos', $registros)
-      ->with('nombreAsociacion', $nombreAsociacion);
+        return view('eventos')
+        ->with('eventos', $registros)
+        ->with('nombreAsociacion', $nombreAsociacion);
+      }else if(Auth::user()->privilegios == 'Normal'){
+        return 'Sin permisos';
+      }
     }
 
     public function __construct()

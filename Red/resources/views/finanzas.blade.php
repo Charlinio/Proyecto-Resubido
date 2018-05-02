@@ -78,7 +78,7 @@ Finanzas
 </div>
 
 <div class="col-md-12">
-  <table class="table" id="EstadoFinanciero">
+  <table class="table filafinanza" id="EstadoFinanciero">
     <thead>
       <tr>
         <td>FECHA</td>
@@ -86,6 +86,7 @@ Finanzas
         <td>INGRESO</td>
         <td>EGRESO</td>
         <td>SALDO</td>
+        <td>ELIMINAR</td>
       </tr>
     </thead>
     <tbody>
@@ -93,9 +94,15 @@ Finanzas
       <tr>
         <td>{{ $e->fecha }}</td>
         <td>{{ $e->concepto}}</td>
-        <td style="color:green;">{{ $e->ingreso }}</td>
-        <td style="color:red;">{{ $e->egreso }}</td>
+        <td style="color:green;"><b>{{ $e->ingreso }}</b></td>
+        <td style="color:red;"><b>{{ $e->egreso }}</b></td>
         <td>{{ $e->saldo }}</td>
+        <td>
+          <button type="button" name="button" class="eliminarfinanza btneliminarfinanza" data-toggle="modal"
+           data-target="#eliminarfinanza" data-whatever="@mdo" data-idfinanza="{{ $e->id_finanza }}">
+           <i class="fas fa-times"></i>
+          </button>
+        </td>
       </tr>
       @empty
       <p>Sin registros</p>
@@ -141,6 +148,13 @@ Finanzas
           </div>
           <br>
           <div class="form-group row">
+            @if(empty($disponible->toArray()))
+            <p><b>Saldo disponible: </b><span style="color:red;font-weight:bold;font-size:1.5rem;">$0.00</span></p>
+            @else
+            <p><b>Saldo disponible:</b> <span style="color:green;font-weight:bold;font-size:1.5rem;">${{ $disponible[0]->saldo }}</span></p>
+            @endif
+          </div>
+          <div class="form-group row">
               <label for="cantidad" class="col-md-3 labeles"><span class="obligatorio">*</span> Cantidad: </label>
             <div class="col-md-9">
               <input type="number" name="cantidad" value="" class="form-control">
@@ -152,6 +166,27 @@ Finanzas
           <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
         </div>
         {{ Form::close() }}
+    </div>
+  </div>
+</div>
+<!--Modal para eliminar registro -->
+<div class="modal fade" id="eliminarfinanza" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="">Eliminando registro</h4>
+      </div>
+      {!! Form::open(array('route'=>['admin.finanzas.destroy', $e->id_finanza], 'method'=>'delete')) !!}
+      <div class="modal-body">
+        <input type="hidden" name="idfinanza" value="" id="idfinanza">
+        <label for="">Seguro que desea eliminar este registro?</label>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-danger" name="button" id="btnEliminar">Eliminar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+      </div>
+        {!! Form::close() !!}
     </div>
   </div>
 </div>
@@ -177,6 +212,11 @@ Finanzas
 
     $("#btnNuevoConcepto").on('click', function(){
       $('#fecha_sistema').val(today);
+    });
+
+    $('.btneliminarfinanza').on('click', function(){
+      var idfinanza = $(this).data('idfinanza');
+      $('#idfinanza').val(idfinanza);
     });
 
   });

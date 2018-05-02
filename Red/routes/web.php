@@ -18,12 +18,15 @@ Route::group(['prefix'=>'admin','as'=>'admin.'],function(){
   Route::get('/', 'AdminInicioController@index');
   Route::get('/actas','AdminActasController@index');
   Route::post('/actas/ordenactas','AdminActasController@ordenactas');
+  Route::post('/actas/actasanio','AdminActasController@actasAnio');
   Route::get('/eventos','AdminEventosController@index');
   Route::get('/usuarios', 'AdminUsuariosController@index');
   Route::post('/usuarios/buscar','AdminUsuariosController@buscar');
   Route::get('/publicar', 'AdminPublicarController@index');
   Route::get('/finanzas', 'AdminFinanzasController@index');
-  Route::get('/cuotas', 'AdminCuotasController@index');
+  //Route::get('/cuotas', 'AdminCuotasController@index');
+  Route::get('/cuotas', 'AdminCuotassController@index');
+  Route::post('/cuotas/adeudos', 'AdminCuotassController@adeudos');
   Route::get('/asociaciones', 'AdminAsociacionesController@index');
   Route::get('/reportes', 'AdminAsociacionesController@index');
 
@@ -34,7 +37,8 @@ Route::group(['prefix'=>'admin','as'=>'admin.'],function(){
   Route::resource('usuarios','AdminUsuariosController');
   Route::resource('publicar','AdminPublicarController');
   Route::resource('finanzas','AdminFinanzasController');
-  Route::resource('cuotas','AdminCuotasController');
+  //Route::resource('cuotas','AdminCuotasController');
+  Route::resource('cuotas','AdminCuotassController');
   Route::resource('asociaciones','AdminAsociacionesController');
   Route::resource('reportes','AdminReportesController');
 });

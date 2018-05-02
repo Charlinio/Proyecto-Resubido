@@ -12,33 +12,46 @@ class AdminFinanzasController extends Controller
 {
     //
     public function index(){
-      $tabla = \DB::table('estado_financiero')
-        ->orderBy('created_at','asc')
-        ->get();
+      if( Auth::user()->privilegios == 'Administrador' ){
+        $tabla = \DB::table('estado_financiero')
+          ->orderBy('created_at','asc')
+          ->get();
 
-      $nombreAsociacion = \DB::table('asociaciones')
-        ->where('id_asociacion', '=', Auth::user()->asociacion)
-        ->get();
+        $nombreAsociacion = \DB::table('asociaciones')
+          ->where('id_asociacion', '=', Auth::user()->asociacion)
+          ->get();
 
-      $asociaciones = \DB::table('asociaciones')
-        ->get();
+        $asociaciones = \DB::table('asociaciones')
+          ->get();
 
-      $cuotas = \DB::table('cuotas')
-        ->select('cuotas.*','asociaciones.*')
-        ->join('asociaciones', 'cuotas.organizacion', '=', 'asociaciones.id_asociacion')
-        ->get();
+        $disponible = \DB::table('estado_financiero')
+          ->orderBy('id_finanza', 'desc')
+          ->take(1)
+          ->get();
 
-      $anio = \DB::table('cuotas')
-        ->select('anio')
-        ->distinct()
-        ->get();
+          $reporteActa = \DB::select("
+            select * from estado_financiero
+          ");
 
-      return view('finanzas')
-        ->with('estado', $tabla)
-        ->with('asociaciones', $asociaciones)
-        ->with('anio',$anio)
-        ->with('cuotas', $cuotas)
-        ->with('nombreAsociacion', $nombreAsociacion);
+          $actonas = '';
+          $valores = '';
+          for($i=0; $i<count($reporteActa);$i++){
+            $actonas = $actonas . '"' . $reporteActa[$i]->fecha.'",';
+            $valores = $valores . '"' . $reporteActa[$i]->saldo.'",';
+          }
+
+
+        return view('finanzas')
+          ->with('estado', $tabla)
+          ->with('asociaciones', $asociaciones)
+          ->with('disponible', $disponible)
+          ->with('nombreAsociacion', $nombreAsociacion)
+          ->with('meses', $actonas)
+          ->with('valores', $valores);
+      }else if(Auth::user()->privilegios == 'Normal'){
+        return 'Sin permisos';
+      }
+
     }
 
     public function __construct()
@@ -47,7 +60,6 @@ class AdminFinanzasController extends Controller
     }
 
     public function store(Request $req){
-      if ($req->Caso == "1") {
         $validator = Validator::make($req->all(), [
           'fecha'=>'required',
           'concepto'=>'required',
@@ -86,43 +98,19 @@ class AdminFinanzasController extends Controller
                 'saldo'=> $valor - $req->cantidad
               ]);
             }
+          }
         }
-      }
         return redirect()->to('/admin/finanzas')
                 ->with('mensaje','Registro Agregado');
-    }else if($req->Caso == "3"){
-      $validator = Validator::make($req->all(), [
-        'anioTabla'=>'required'
-      ]);
-      $tabla = \DB::table('asociaciones')
-        ->get();
-
-      if ($validator->fails()) {
-        //Quiere decir que no esta correcto
-        return redirect('/admin/finanzas')
-                ->withInput()
-                ->withErrors($validator);
-      }else{
-        foreach ($tabla as $dato) {
-          Cuota::create([
-            'organizacion'=>$dato->id_asociacion,
-            'anio'=>$req->anioTabla
-          ]);
-        }
-
-      }
-      return redirect()->to('/admin/finanzas')
-              ->with('mensaje','Registro Agregado');
-    }
   }
 
   public function edit(Request $req){
-      $cuotas = Cuota::find($req->idCuota);
-      $cuotas->mes = $req->meses;
-      $cuotas->cuota = $req->cantidadCuota;
-      $cuotas->save();
-      return redirect()->to('/admin/finanzas')
-        ->with('mensaje','Cuota Agregada');
 
+  }
+
+  public function destroy(Request $req){
+    $idfinan = Finanzas::find($req->idfinanza);
+    $idfinan->delete();
+    return redirect('/admin/finanzas')->with('mensaje','Registro Eliminado');
   }
 }

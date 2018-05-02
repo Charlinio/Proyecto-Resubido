@@ -8,7 +8,8 @@ class Convocatoria extends Model
 {
     //Tabla
     protected $table = 'convocatorias';
+    protected $primaryKey = 'ref';
     protected $fillable = [
-      'ref', 'fecha_creacion', 'hora', 'lugar', 'sesion', 'ciudad'
+      'ref','fecha_creacion', 'hora', 'lugar', 'sesion', 'ciudad'
     ];
 }
